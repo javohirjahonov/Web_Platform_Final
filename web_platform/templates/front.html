@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Reset CSS */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Header styles */
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+        }
+
+        header nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+        }
+
+        header nav ul li {
+            margin-right: 20px;
+        }
+
+        header nav ul li a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        /* Filter styles */
+        .filter {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .filter select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            font-size: 16px;
+        }
+
+        /* Product styles */
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .product-card {
+            width: 300px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #fff;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .product-details {
+            padding: 10px;
+        }
+
+        .product-name {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .product-price {
+            color: green;
+            font-size: 18px;
+            margin-top: 5px;
+        }
+
+        .product-description {
+            margin-top: 5px;
+        }
+
+        .product-category {
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+        .buy-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Animation on hover */
+        .buy-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-5px);
+            }
+            50% {
+                transform: translateX(5px);
+            }
+            75% {
+                transform: translateX(-5px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="filter">
+        <select id="categoryFilter">
+            <option value="all">All Categories</option>
+            <option value="LAPTOP">LAPTOP</option>
+            <option value="TV">TV</option>
+            <option value="AUDIO">AUDIO</option>
+            <option value="PHONE">PHONE</option>
+            <option value="WATCHES">WATCHES</option>
+            <option value="GAME">GAME</option>
+            <!-- Add more category options as needed -->
+        </select>
+    </div>
+
+    <div class="product-container">
+        <!-- Django backend data rendering -->
+        {% for product in products %}
+        <div class="product-card" data-category="{{ product.category }}">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+            <div class="product-details">
+                <div class="product-name">{{ product.name }}</div>
+                <div class="product-price">${{ product.price }}</div>
+                <div class="product-description">{{ product.description }}</div>
+                <div class="product-category">Category: {{ product.category }}</div>
+                <button class="buy-button" onclick="buyProduct('{{ product.name }}')">Buy Now</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        document.getElementById('categoryFilter').addEventListener('change', function() {
+            const selectedCategory = this.value;
+            const productCards = document.querySelectorAll('.product-card');
+
+            productCards.forEach(card => {
+                if (selectedCategory === 'all' || card.getAttribute('data-category') === selectedCategory) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        function buyProduct(productName) {
+            // Here you can implement your buy logic, for now let's just show a confirmation message
+            alert('You have bought ' + productName);
+        }
+    </script>
+</body>
+</html>
